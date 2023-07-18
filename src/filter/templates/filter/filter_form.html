@@ -1,0 +1,92 @@
+{% extends "filter/index.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3>{% if object %}Edit Task {% else %} Create New Rule {% endif %}</h3>
+        <form action="" method="post" enctype="multipart/form-data" onkeypress="return event.keyCode != 13;">
+            {% csrf_token %}
+            <!--<fieldset>
+                {% for field in form %}
+                    {% if field.errors %}
+                        <div class="control-group error">
+                            <label class="control-label">{{ field.label }}</label> 
+                            <div class="controls">{{ field }}
+                                <span class="help-inline">
+                                    {% for error in  field.errors %}{{ error }}{% endfor %}
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="control-group">
+                            <label class="control-label">{{ field.name }}</label> 
+                            <div class="controls">{{ field }}
+                                {% if field.help_text %}
+                                    <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>-->
+            <hr style="border: 1px solid black;">
+            <h4> </h4>
+            {{form.name | as_crispy_field}}
+            <hr style="border: 1px solid black;">
+            <div>
+                <h5><U> TimeStamp </U></h5>
+                <div class="row">
+                    <div class="col-4">{{form.start_time | as_crispy_field}}</div>
+                    <div class="col-4">{{form.end_time | as_crispy_field}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-4">{{form.start_date | as_crispy_field}}</div>
+                    <div class="col-4">{{form.end_date | as_crispy_field}}</div>
+                </div>
+                <div>
+                    <label class="">
+                      <input type="checkbox" id="add" onclick="add_date()" > Add a date
+                    </label>
+                    <div class="col-4" id="myDIV2" style="display:none;">
+                        {{form.days | as_crispy_field}}
+                    </div>
+                </div>
+                
+            </div>
+            <hr style="border: 1px solid black;">
+            <div class="row">
+                <div class="col-4"> {{form.os | as_crispy_field}}</div>
+                
+                <div class="col-4">{{form.BYOD | as_crispy_field}}</div>
+            </div>
+           
+            <hr style="border: 1px solid black;">
+            <h5><U> Network </U></h5>
+            <div class="row">
+                <div class="col-3">{{form.network | as_crispy_field}}</div>
+                <div class="col-3">{{form.subnet | as_crispy_field}}</div>
+                <div class="col-3">{{form.router | as_crispy_field}}</div>
+                <div class="col-3">{{form.DHCP | as_crispy_field}}</div>
+                <div class="col-3">{{form.DNS | as_crispy_field}}</div>
+            </div>
+            <hr style="border: 1px solid black;">
+            <div id="formset-container">
+                {{ formset.management_form }}
+                {% for form in formset %}
+                  <div class="form-row">
+                    {{ form.label.label_tag }} {{ form.label }}
+                  </div>
+                {% endfor %}
+              </div>
+            <div class="col-3">{{form.others | as_crispy_field}}</div>
+
+            
+            <div class="form-actions">
+                <p><input type="submit" class="btn btn-success" value="Submit"></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

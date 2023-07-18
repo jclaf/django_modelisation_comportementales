@@ -1,0 +1,20 @@
+{% extends "filter/index.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <p> Title : {{ task.name }} </p>
+        <p> OS : {{task.os}} </p>
+        <p> Network : {{ task.network }} </p>
+        <p> Subnet: {{ task.subnet }} </p>
+        <!-- Collect all detail to a Rules -->
+        <hr>
+        <p> Start Time : {{ task.start_time }} </p>
+        <p> End time : {{ task.end_time }} </p>
+        <p> Start Date : {{ task.start_date }} </p>
+        <p> End Date : {{ task.end_date }} </p>
+
+        <p> <a href="{% url 'filter_list' %}">View All Tasks</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

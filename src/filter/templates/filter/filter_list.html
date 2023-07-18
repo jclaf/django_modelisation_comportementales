@@ -1,0 +1,64 @@
+{% extends "filter/index.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3>Rules List</h3>
+        <p> <a class="btn btn-primary" href="{% url 'filter_create' %}" role="button"> + Add A New Rule</a></p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.get_status_display }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-outline-info" href="{% url 'filter_detail' task.id %}">Détail</a>
+                            <a class="btn btn-outline-success"href="{% url 'filter_update' task.id %}">Update</a>
+                            <a class="btn btn-outline-danger" href="#DeleteModel{{task.id}}" data-bs-target="#DeleteModel{{task.id}}" data-bs-toggle="modal" role="button">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+
+                <div class="modal fade" id="DetailModel{{task.id}}" aria-hidden="true" aria-labelledby="detailModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h1 class="modal-title fs-5" id="deleteModalToggleLabel">Are you sure, you want to delete {{task.name}}'s detail ?</h1>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{%url 'filter_delete' task.id%}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="DeleteModel{{task.id}}" aria-hidden="true" aria-labelledby="deleteModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h1 class="modal-title fs-5" id="deleteModalToggleLabel">Are you sure, you want to delete {{task.name}}'s detail ?</h1>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{%url 'filter_delete' task.id%}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
