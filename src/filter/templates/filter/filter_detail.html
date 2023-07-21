@@ -3,15 +3,49 @@
 <div class="card">
     <div class="card-body">
         <p> Title : {{ task.name }} </p>
-        <p> OS : {{task.os}} </p>
-        <p> Network : {{ task.network }} </p>
-        <p> Subnet: {{ task.subnet }} </p>
-        <!-- Collect all detail to a Rules -->
-        <hr>
-        <p> Start Time : {{ task.start_time }} </p>
-        <p> End time : {{ task.end_time }} </p>
-        <p> Start Date : {{ task.start_date }} </p>
-        <p> End Date : {{ task.end_date }} </p>
+        <hr style="border: 1px solid black;">
+            <h5><U> TimeStamp </U></h5>
+        {% if task.start_time %}
+            <p> Start Time : {{ task.start_time }} </p>
+        {% endif %}
+        {% if task.end_time %}
+            <p> End time : {{ task.end_time }} </p>
+        {% endif %}
+        {% if task.start_date %}
+            <p> Start Date : {{ task.start_date }} </p>
+        {% endif %}
+        {% if task.end_date %}
+            <p> End Date : {{ task.end_date }} </p>
+        {% endif %}
+        {% if task.days %}
+            <p> Days : {{ task.days }} </p>
+        {% endif %}
+        <hr style="border: 1px solid black;">
+        <h5><U> Network </U></h5>
+        {% if task.network %}
+            <p> Network : {{ task.network }} </p>
+        {% endif %}
+        {% if task.subnet %}
+            <p> Subnet: {{ task.subnet }} </p>
+        {% endif %}
+        {% if task.router %}
+            <p> Router: {{ task.router }} </p>
+        {% endif %}
+        {% if task.DHCP %}
+            <p> DHCP: {{ task.DHCP }} </p>
+        {% endif %}
+        {% if task.DNS %}
+            <p> DNS: {{ task.DNS }} </p>
+        {% endif %}
+
+        <hr style="border: 1px solid black;">
+        {% if task.os %}
+            <p> OS : {{task.os}} </p>
+        {% endif %}
+        {% if task.os %}
+            <p> BYOD : {{task.BYOD}} </p>
+        {% endif %}
+        
 
         <p> <a href="{% url 'filter_list' %}">View All Tasks</a>
         </p>

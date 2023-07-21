@@ -18,14 +18,6 @@ class Day(models.IntegerChoices):
     SATURDAY = 5, _("Saturday")
     SUNDAY = 6, _("Sunday")"""
 
-class Access(models.Model):
-    
-    #chaque utilisaateur a acces a tel service
-    #verifier s'il est externe ou interne (AD ou autres)
-    #
-    def __str__(self):
-        return self.name
-
 
   
 class Filter(models.Model):
@@ -40,7 +32,7 @@ class Filter(models.Model):
     end_date = models.DateField(verbose_name="End date",null=True, blank=True)
     
     
-    os = models.CharField(max_length=20, blank=True)
+    os = models.CharField(max_length=50, blank=True)
     
     #mettre un moyen de choisir entre  ipv4 ou ipv6
     network = models.CharField(verbose_name='IP address', max_length=20, blank=True)
@@ -52,12 +44,46 @@ class Filter(models.Model):
     
     BYOD = models.IntegerField(verbose_name="BYOD",null=True, blank=True)
     
-    others = models.CharField(max_length=20, blank=True)
+    #extra_field = models.CharField(max_length=20, blank=True)
+    def get_days_as_string(self):
+        days_mapping = {
+            0: 'Monday',
+            1: 'Tuesday',
+            2: 'Wednesday',
+            3: 'Thursday',
+            4: 'Friday',
+            5: 'Saturday',
+            6: 'Sunday',
+        }
+
+        days_list = [days_mapping[int(day)] for day in self.days.split(",") if day.strip().isdigit()]
+        return ", ".join(days_list)
     
     def __str__(self):
         return self.name
     
+
+
+class Access(models.Model):
     
+    #chaque utilisaateur a acces a tel service
+    #verifier s'il est externe ou interne (AD ou autres)
+    #
+    def __str__(self):
+        return self.name
+
+
+class FilterExtra (models.Model):
+    filter = models.ForeignKey(Filter, on_delete=models.CASCADE)
+    extra = models.CharField(max_length=20)
+    timestamp = models.DateTimeField(auto_now_add=True) 
+    updated = models.DateTimeField(auto_now=True) 
+    DELETE = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.extra
+
+
 # période de date
 # période d'heure
 # os différent 

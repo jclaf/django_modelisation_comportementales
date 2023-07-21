@@ -69,21 +69,48 @@
                 <div class="col-3">{{form.subnet | as_crispy_field}}</div>
                 <div class="col-3">{{form.router | as_crispy_field}}</div>
                 <div class="col-3">{{form.DHCP | as_crispy_field}}</div>
-                <div class="col-3">{{form.DNS | as_crispy_field}}</div>
+                <div class="col-3">{{form.DNS|as_crispy_field}}</div>
             </div>
             <hr style="border: 1px solid black;">
-            <div id="formset-container">
-                {{ formset.management_form }}
-                {% for form in formset %}
-                  <div class="form-row">
-                    {{ form.label.label_tag }} {{ form.label }}
-                  </div>
-                {% endfor %}
-              </div>
-            <div class="col-3">{{form.others | as_crispy_field}}</div>
-
+            <h5><U> Extra </U></h5>
+            {% if formset %}
+                {{formset.management_form}}
+                <div id='extra-form-list' class="container text-center">
+                    {% for form in formset %}
+                        <div class="extra-form input-group"> 
+                           
+                            <!--<div class="input-group-append">
+                                <button class="btn btn-danger remove-extra" type="button">-</button>
+                            </div>-->
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            {% for field in form.visible_fields %}
+                                {% if field.name == 'DELETE' %}
+                                    <div class="input-group-append mx-5">
+                                        {{ field|as_crispy_field }}
+                                    </div>
+                                {% else %}
+                                    <div class='col-3'>{{ field|as_crispy_field }} </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <div id='extraEmpty-form' class="input-group hidden mb-3"> 
+                        <div class="col-3">{{formset.empty_form.extra}}</div>
+                        <div class="input-group-append">
+                            <button class="btn btn-danger remove-extra" type="button">-</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id='add-extra' class='btn btn-secondary' type='button'>Add More</button>
+                </div>
+            {% endif %}
             
-            <div class="form-actions">
+            <hr style="border: 1px solid black;">
+            
+            <div class="form-actions add-stl">
                 <p><input type="submit" class="btn btn-success" value="Submit"></p>
             </div>
         </form>

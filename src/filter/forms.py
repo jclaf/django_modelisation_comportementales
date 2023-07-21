@@ -3,7 +3,7 @@ from django.core.files.base import File
 from django.db.models.base import Model
 from django.forms.utils import ErrorList
 from django.utils.translation import gettext_lazy as _
-
+from django.forms import modelform_factory
 
 from .models import *
 from django import forms
@@ -30,7 +30,6 @@ OS_CHOICES = (
 
 BYOD_CHOICES = [(0, _("Yes")),(1, _("No"))]
 
-
 class FilterForm(forms.ModelForm):
     error_css_class = 'error-field'
     required_css_class = 'required-field'
@@ -40,7 +39,9 @@ class FilterForm(forms.ModelForm):
     #name = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Title"}))
     days = forms.MultipleChoiceField(choices = DAY_CHOICES,widget=forms.widgets.CheckboxSelectMultiple,label="", required=False)
     
-    os = forms.MultipleChoiceField(choices = OS_CHOICES,widget=forms.widgets.CheckboxSelectMultiple,required=True,label="Operating System")
+    os = forms.MultipleChoiceField(choices = OS_CHOICES,widget=forms.widgets.CheckboxSelectMultiple(attrs={"class": "form-check"}),required=True,label="Operating System")
+    
+    #extra_field = forms.CharField(widget=forms.HiddenInput())
     
     class Meta:
         model = Filter
@@ -67,10 +68,12 @@ class FilterForm(forms.ModelForm):
             'end_date' : forms.DateInput(
                 attrs={"class": "form-control",'type': 'date', 'format': '%B %d'}
                 ),
-            'BYOD' : forms.RadioSelect(choices=BYOD_CHOICES, attrs={"class": "btn-check"}),
-            'others': forms.TextInput(attrs={"class": "form-control","style":"100px"})
+            'BYOD' : forms.RadioSelect(choices=BYOD_CHOICES, attrs={"class": "btn-check"})
         }
-        
+    
+    def selected_days_labels(self):
+        return [label for value, label in self.fields['days'].choices if value in self['days'].value()]
+      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         """for field in self.fields: 
@@ -81,4 +84,18 @@ class FilterForm(forms.ModelForm):
             }
             self.fields[str(field)].widget.attrs.update(label)"""
         
+                
+class FilterExtraForm(forms.ModelForm):
+    class Meta:
+        model = FilterExtra
+        fields = ['extra','DELETE']
+        labels = {
+            'extra':'',
+            'DELETE': 'Supprimer'  
+        }
         
+        widgets = {
+            'extra' : forms.TextInput(
+                attrs={"class": "form-control col-3","placeholder":"Exemple: OS: Linux"} ),
+            'DELETE': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
