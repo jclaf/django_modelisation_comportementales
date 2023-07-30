@@ -7,6 +7,7 @@ urlpatterns = [
     
     path('create/', filter_create, name='filter_create'),
 
+    path('create_auto/', filter_create_auto, name='filter_auto'),
     # Retrieve task list
     path('list/', filter_list, name='filter_list'),
 

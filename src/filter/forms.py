@@ -99,3 +99,7 @@ class FilterExtraForm(forms.ModelForm):
                 attrs={"class": "form-control col-3","placeholder":"Exemple: OS: Linux"} ),
             'DELETE': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+        
+class FilterNLPForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea)
+    

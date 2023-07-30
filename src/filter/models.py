@@ -83,8 +83,10 @@ class FilterExtra (models.Model):
     def __str__(self):
         return self.extra
 
+class FilterNLP (models.Model):
+    
+    text = models.CharField(max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
-# période de date
-# période d'heure
-# os différent 
-
+    def __str__(self):
+        return self.text

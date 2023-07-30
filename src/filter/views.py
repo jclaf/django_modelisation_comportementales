@@ -6,8 +6,8 @@ from django.forms.models import modelformset_factory
 
 import datetime 
 
-from .models import Filter, FilterExtra
-from .forms import FilterForm , FilterExtraForm
+from .models import Filter, FilterExtra, FilterNLP
+from .forms import FilterForm , FilterExtraForm, FilterNLPForm
 
 def index(request):
     return render(request, "filter/home.html")
@@ -38,6 +38,18 @@ def filter_create(request):
 
     return render(request, "filter/filter_form.html", { "form": form, "formset": formset })
 
+def filter_create_auto(request):
+    
+    #form = FilterForm()
+    #ExtraFormset = modelformset_factory(FilterExtra, form=FilterExtraForm, extra=0)
+    #formset = ExtraFormset(queryset=FilterExtra.objects.none())
+    
+    form = FilterNLPForm()
+    
+    context = {
+        "form" : form,
+    }
+    return render(request, "filter/filter_auto.html",context)#,{"form": form, "formset": formset})
 
 # Retrieve task list
 def filter_list(request):
@@ -48,8 +60,8 @@ def filter_list(request):
 # Retrieve a single task
 def filter_detail(request, pk):
     task = get_object_or_404(Filter, pk=pk)
-    
-    return render(request, "filter/filter_detail.html", { "task": task, })
+    #task_extra = get_object_or_404(FilterExtra, pk=pk)
+    return render(request, "filter/filter_detail.html", { "task": task}) #, "task_extra": task_extra })
 
 
 # Update a single task
@@ -89,19 +101,6 @@ def filter_update(request, pk):
         qs = task_obj.filterextra_set.all()
         formset = ExtraFormset(queryset=qs)
     return render(request, "filter/filter_form.html", { "form": form, "formset":formset, "object": task_obj})
-
-
-  
-""" if form.prefix + '-DELETE' in request.POST:  # Check if the form is marked for deletion
-        if form.instance.pk:  # Check if the instance exists in the database
-            form.instance.delete()  # Delete the object from the database
-            formset.deleted_forms.remove(form)
-            print("here")
-        else:
-        child = form.save(commit=False)
-        child.filter = parent
-        child.save()
-"""
 
 # Delete a single task
 def filter_delete(request, pk):
